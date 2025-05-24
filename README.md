@@ -1,7 +1,5 @@
-## Robot Package Template
+### The Mole
 
-This is a GitHub template. You can make your own copy by clicking the green "Use this template" button.
+The Mole is my introduction to applying ROS in the real world at home. It will serve as my base platform to do more exciting things without having to re-implement anything. The Mole will be using ROS for SLAM and navigation with the goal of being able to use waypoints to direct the robot around a map which it will traverse autonomously with Nav2.
 
-It is recommended that you keep the repo/package name the same, but if you do change it, ensure you do a "Find all" using your IDE (or the built-in GitHub IDE by hitting the `.` key) and rename all instances of `my_bot` to whatever your project's name is.
-
-Note that each directory currently has at least one file in it to ensure that git tracks the files (and, consequently, that a fresh clone has direcctories present for CMake to find). These example files can be removed if required (and the directories can be removed if `CMakeLists.txt` is adjusted accordingly).
+Gazebo will be used to simulate the robot as I cannot purchase a 2d lidar right now.
