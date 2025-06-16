@@ -18,6 +18,12 @@ def generate_launch_description():
           )]), launch_arguments={'use_sim_time': 'true', 'use_ros2_control': 'true'}.items()
   )
 
+  slam = IncludeLaunchDescription(
+          PythonLaunchDescriptionSource([os.path.join(
+            get_package_share_directory(package_name),'launch','online_async_launch.py'
+          )])
+  )
+
   default_world = os.path.join(
     get_package_share_directory(package_name),
     'worlds',
@@ -89,4 +95,5 @@ def generate_launch_description():
     diff_drive_spawner,
     joint_broad_spawner,
     twist_stamper,
+    slam,
   ])
