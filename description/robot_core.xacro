@@ -47,7 +47,7 @@
         <box size="0.2 0.2 0.1"/>
       </geometry>
     </collision>
-    <xacro:inertial_box mass="0.5" x="0.2" y="0.2" z="0.1">
+    <xacro:inertial_box mass="1.0" x="0.2" y="0.2" z="0.1">
       <origin xyz="0.1 0 0.05" rpy="0 0 0"/>
     </xacro:inertial_box>
   </link>
@@ -82,6 +82,7 @@
   </link>
 
   <gazebo reference="left_wheel">
+    <material>Gazebo/Blue</material>
   </gazebo>
 
   <!-- RIGHT WHEEL LINK -->
@@ -111,6 +112,7 @@
   </link>
   
   <gazebo reference="right_wheel">
+    <material>Gazebo/Blue</material>
   </gazebo>
 
   <!-- CASTER WHEEL LINK -->
@@ -133,14 +135,15 @@
         <sphere radius="0.03"/>
       </geometry>
     </collision>
-    <xacro:inertial_sphere mass="0.1" radius="0.03">
+    <xacro:inertial_sphere mass="0.2" radius="0.03">
       <origin xyz="0 0 0" rpy="0 0 0"/>
     </xacro:inertial_sphere>
   </link>
 
   <gazebo reference="caster_wheel">
-    <mu1 value="0.001"/>
-    <mu2 value="0.001"/>
+    <material>Gazebo/Red</material>
+    <mu1 value="0.001" />
+    <mu2 value="0.001" />
   </gazebo>
 
 </robot>
