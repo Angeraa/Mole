@@ -1,0 +1,7 @@
+<library path="mole_hardware_interface">
+  <class name="mole_hardware_interface::MoleDiffSystem" type="mole_hardware_interface::MoleDiffSystem" base="hardware_interface::SystemInterface">
+    <description>
+      This class implements a differential drive hardware interface for the MOLE robot.
+    </description>
+  </class>
+</library>
