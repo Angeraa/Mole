@@ -19,7 +19,7 @@ LibSerial::BaudRate convert_baud_rate(int baud_rate) {
   }
 }
 
-class LibSerialPortWrapper : SerialPortIface {
+class LibSerialPortWrapper : public SerialPortIface {
   LibSerial::SerialPort serial_port_;
 
   public:
@@ -30,7 +30,7 @@ class LibSerialPortWrapper : SerialPortIface {
       }
     }
 
-    bool is_open() const override {
+    bool isOpen() const override {
       return serial_port_.IsOpen();
     }
 

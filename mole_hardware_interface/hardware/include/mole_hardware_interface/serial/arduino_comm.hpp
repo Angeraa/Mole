@@ -3,6 +3,7 @@
 #include <sstream>
 #include <iostream>
 #include <cstring>
+#include <memory>
 
 #include "mole_hardware_interface/serial/hardware_msgs.hpp"
 #include "serialport_iface.hpp"
@@ -10,33 +11,40 @@
 
 
 class ArduinoComm {
-  SerialPortIface &serial_port_;
+  std::unique_ptr<SerialPortIface> serial_port_;
+  int timeout_ms_ = 100;
   public:
-    ArduinoComm(SerialPortIface &serial_port) : serial_port_(serial_port) {}
+    ArduinoComm(std::unique_ptr<SerialPortIface> serial_port) : serial_port_(std::move(serial_port)) {}
 
-    void initialize(const std::string &port, int baud_rate) {
+    void initialize(const std::string &port, int baud_rate, int timeout_ms = 100) {
+      timeout_ms_ = timeout_ms;
       try {
-        serial_port_.open(port, baud_rate);
+        serial_port_->open(port, baud_rate);
       } catch (const std::exception &e) {
         std::cerr << "Error initializing serial port: " << e.what() << std::endl;
       }
     }
 
-    ~ArduinoComm() {
-      if (serial_port_.is_open()) {
-        serial_port_.close();
+    void close() {
+      if (serial_port_->isOpen()) {
+        serial_port_->close();
       }
     }
 
-    SerialPortIface &get_serial_port() {
-      return serial_port_;
+    ~ArduinoComm() {
+      close();
     }
 
-    void read_encoders(int &val_1, int &val_2) {
+    SerialPortIface &get_serial_port() {
+      return *serial_port_;
+    }
+
+    void readEncoders(int &val_1, int &val_2) {
       EncoderPacket packet;
       std::vector<uint8_t> buffer(sizeof(EncoderPacket));
       try {
-        serial_port_.read(buffer, buffer.size(), 1000);
+        serial_port_->write(std::vector<uint8_t>{0xAA, 0xBB, 0x02, 0x00}); // Request encoder data
+        serial_port_->read(buffer, buffer.size(), timeout_ms_);
         std::memcpy(&packet, buffer.data(), sizeof(EncoderPacket));
         // Validate headers
         if (packet.header1 != 0xAA || packet.header2 != 0xBB || packet.type != 0x01) {
@@ -56,7 +64,7 @@ class ArduinoComm {
       }
     }
 
-    void write_velocities(float vel_1, float vel_2) {
+    void writeVelocities(int vel_1, int vel_2) {
       VelocityPacket packet;
       packet.left_velocity = vel_1;
       packet.right_velocity = vel_2;
@@ -68,7 +76,27 @@ class ArduinoComm {
       );
 
       try {
-        serial_port_.write(buffer);
+        serial_port_->write(buffer);
+      } catch (const std::exception &e) {
+        std::cerr << "Error writing to serial port: " << e.what() << std::endl;
+      }
+    }
+
+    void writePID(int p, int i, int d, int o) {
+      PIDPacket packet;
+      packet.p = p;
+      packet.i = i;
+      packet.d = d;
+      packet.o = o;
+      packet.checksum = calculate_checksum((uint8_t *)&packet, sizeof(PIDPacket) - 1);
+
+      std::vector<uint8_t> buffer(
+        reinterpret_cast<uint8_t*>(&packet),
+        reinterpret_cast<uint8_t*>(&packet) + sizeof(PIDPacket)
+      );
+
+      try {
+        serial_port_->write(buffer);
       } catch (const std::exception &e) {
         std::cerr << "Error writing to serial port: " << e.what() << std::endl;
       }

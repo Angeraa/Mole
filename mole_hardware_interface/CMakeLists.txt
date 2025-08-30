@@ -41,14 +41,13 @@ target_include_directories(
   $<BUILD_INTERFACE:hardware/mole_hardware_interface/include>
   $<INSTALL_INTERFACE:include/${PROJECT_NAME}>
 )
-target_link_libraries(
+ament_target_dependencies(
   ${PROJECT_NAME}
-  rclcpp::rclcpp
-  rclcpp_lifecycle::rclcpp_lifecycle
-  hardware_interface::hardware_interface
-  pluginlib::pluginlib
-  libserial::serial
+  ${THIS_PACKAGE_INCLUDE_DEPENDS}
 )
+
+target_link_libraries(${PROJECT_NAME} PUBLIC serial)
+
 
 pluginlib_export_plugin_description_file(
   hardware_interface

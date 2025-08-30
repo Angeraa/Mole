@@ -13,7 +13,7 @@ class MockSerialPort : public SerialPortIface {
     MockSerialPort() = default;
     ~MockSerialPort() override = default;
 
-    bool is_open() const override {
+    bool isOpen() const override {
       return open_;
     }
 
