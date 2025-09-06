@@ -5,7 +5,7 @@
 #include <cstring>
 #include <memory>
 
-#include "mole_hardware_interface/serial/hardware_msgs.hpp"
+#include "hardware_msgs.hpp"
 #include "serialport_iface.hpp"
 
 
@@ -35,8 +35,8 @@ class ArduinoComm {
       close();
     }
 
-    SerialPortIface &get_serial_port() {
-      return *serial_port_;
+    SerialPortIface *get_serial_port() {
+      return serial_port_.get();
     }
 
     void readEncoders(int &val_1, int &val_2) {

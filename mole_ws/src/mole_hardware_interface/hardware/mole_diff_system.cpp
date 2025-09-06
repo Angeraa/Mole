@@ -1,6 +1,6 @@
-#include "include/mole_hardware_interface/mole_diff_system.hpp"
-#include "serial/arduino_comm.hpp"
-#include "serial/libserial_serialport.hpp"
+#include "mole_hardware_interface/mole_diff_system.hpp"
+#include "mole_hardware_interface/serial/arduino_comm.hpp"
+#include "mole_hardware_interface/serial/libserial_serialport.hpp"
 
 #include <chrono>
 #include <cmath>
@@ -189,3 +189,9 @@ namespace mole_hardware_integration {
     return hardware_interface::return_type::OK;
   }
 } // namespace mole_hardware_integration
+
+#include "pluginlib/class_list_macros.hpp"
+PLUGINLIB_EXPORT_CLASS(
+  mole_hardware_integration::MoleDiffSystem,
+  hardware_interface::SystemInterface
+)
