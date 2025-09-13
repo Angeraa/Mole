@@ -41,7 +41,9 @@ class ArduinoComm {
       EncoderPacket packet;
       std::vector<uint8_t> buffer(sizeof(EncoderPacket));
       try {
-        serial_port_->write(std::vector<uint8_t>{0xAA, 0xBB, 0x02, 0x00}); // Request encoder data
+        uint8_t request_packet[4] = {0xAA, 0xBB, 0x02, 0x00};
+        request_packet[3] = calculate_checksum(request_packet, 3);
+        serial_port_->write(std::vector<uint8_t>(request_packet, request_packet + sizeof(request_packet)));
         serial_port_->read(buffer, buffer.size(), timeout_ms_);
         std::memcpy(&packet, buffer.data(), sizeof(EncoderPacket));
         // Validate headers

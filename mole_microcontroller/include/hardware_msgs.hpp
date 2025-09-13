@@ -3,7 +3,17 @@
 #include <cstdint>
 #include <cstddef>
 
+#define MAX_PAYLOAD_SIZE 16
+
 #pragma pack(push, 1)
+
+struct Packet {
+  uint8_t header1 = 0xAA;
+  uint8_t header2 = 0xBB;
+  uint8_t type; // 0x00 for velocity command, 0x01 for encoder data, 0x03 for PID settings
+  uint8_t payload[MAX_PAYLOAD_SIZE];
+  uint8_t checksum;
+};
 struct VelocityPacket {
   uint8_t header1 = 0xAA;
   uint8_t header2 = 0xBB;
