@@ -70,7 +70,7 @@ if(BUILD_TESTING)
   find_package(ament_cmake_gtest REQUIRED)
   ament_add_gtest(test_arduino_comm test/arduino_comm.test.cpp)
   target_include_directories(test_arduino_comm PRIVATE
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/hardware/mole_hardware_interface/include>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/hardware/include>
     $<INSTALL_INTERFACE:include/${PROJECT_NAME}>
   )
   target_link_libraries(test_arduino_comm serial)

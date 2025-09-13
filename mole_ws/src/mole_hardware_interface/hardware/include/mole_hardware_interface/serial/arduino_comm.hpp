@@ -26,9 +26,7 @@ class ArduinoComm {
     }
 
     void close() {
-      if (serial_port_->isOpen()) {
-        serial_port_->close();
-      }
+      serial_port_->close();
     }
 
     ~ArduinoComm() {
